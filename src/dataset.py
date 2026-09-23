@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import torch
 from torch.utils.data import Dataset, DataLoader
 from sklearn.preprocessing import StandardScaler
@@ -13,6 +14,8 @@ class ETTDataset(Dataset):
         
         # Load data
         df = pd.read_csv(data_path)
+        if df.empty:
+            raise ValueError(f"Dataset is empty: {data_path}")
         
         # Preprocessing (similar to Phase 1)
         if 'date' in df.columns:
@@ -21,13 +24,28 @@ class ETTDataset(Dataset):
             
         if df.isnull().sum().sum() > 0:
             df = df.ffill()
-            
-        features = df.drop(columns=['date']).values
+
+        feature_df = df.drop(columns=['date'], errors='ignore')
+        if feature_df.empty:
+            raise ValueError("Dataset must contain at least one numeric feature column.")
+        try:
+            feature_df = feature_df.apply(pd.to_numeric, errors='raise')
+        except (TypeError, ValueError) as exc:
+            raise ValueError("All feature columns must be numeric.") from exc
+        if feature_df.isnull().any().any() or not np.isfinite(feature_df.values).all():
+            raise ValueError("Dataset contains missing or non-finite values after preprocessing.")
+
+        self.feature_names = feature_df.columns.tolist()
+        features = feature_df.values
         
         # 7/2/1 split
         total_len = len(features)
         train_end = int(total_len * 0.7)
         val_end = int(total_len * 0.9)
+        if train_end < seq_len + pred_len:
+            raise ValueError(
+                "Dataset is too short for the requested sequence and prediction lengths."
+            )
         
         if flag == 'train':
             self.data = features[:train_end]
@@ -44,7 +62,7 @@ class ETTDataset(Dataset):
         self.data = self.scaler.transform(self.data)
         
     def __len__(self):
-        return len(self.data) - self.seq_len - self.pred_len + 1
+        return max(0, len(self.data) - self.seq_len - self.pred_len + 1)
         
     def __getitem__(self, idx):
         s_begin = idx

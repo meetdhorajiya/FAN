@@ -95,7 +95,7 @@ All 4 ETT-small datasets are downloaded and used for training, evaluation, and t
 
 - **Split:** 7/2/1 (Train/Val/Test) across all rows — following the official FAN paper approach.
 - **Scaling:** Fitted strictly on the training split to avoid data leakage.
-- **Target variable:** OT (Oil Temperature).
+- **Modelled variables:** All 7 numeric channels are forecast jointly. The UI highlights OT (Oil Temperature).
 
 **Official ETT Dataset Source:** [https://github.com/zhouhaoyi/ETDataset](https://github.com/zhouhaoyi/ETDataset)
 
@@ -105,7 +105,7 @@ See [`docs/DATASETS.md`](docs/DATASETS.md) for full details.
 
 ## 8. Evaluation Metrics
 
-The final model performance will be evaluated using standard forecasting metrics:
+The final model performance is evaluated on every test sample and all seven normalized output channels using:
 
 - **Mean Squared Error (MSE):** Measures the average squared difference between the estimated values and the actual value.
   $$ MSE = \frac{1}{n} \sum_{i=1}^{n} (Y_i - \hat{Y}_i)^2 $$
@@ -155,22 +155,21 @@ The final model performance will be evaluated using standard forecasting metrics
 ### Phase 4 — Baseline Models
 **STATUS: COMPLETED / CURRENT IMPLEMENTATION**
 - Implement suitable baseline forecasting models for comparison.
-- Potential baselines include a simple Linear baseline, DLinear, or a RevIN-based model.
-- Keep final baseline selection manageable for the 2-month project timeline.
+- The implemented comparison baseline is DLinear.
 
 ### Phase 5 — Training & Evaluation
 **STATUS: COMPLETED / CURRENT IMPLEMENTATION**
 - Train the baseline models and the FAN-based model.
-- Evaluate using MSE and MAE on the ETTh1 dataset initially.
+- Evaluate using element-weighted MSE and MAE on all four datasets.
 - Maintain consistent data splits, prediction horizons, preprocessing, and evaluation methodology across models.
-- Expand to additional datasets if computationally feasible.
+- Save the best-validation checkpoints and machine-readable result files.
 
 ### Phase 6 — Experiments & Analysis
 **STATUS: COMPLETED / CURRENT IMPLEMENTATION**
 - **Dataset Comparison:** Compare performance across selected datasets.
-- **Forecast Horizon Comparison:** Test horizons such as 96, 168, 336, and 720 (if computational limits on Colab/Kaggle permit).
-- **Frequency Analysis:** Study the effect of different Top-K frequency selections.
-- **Ablation Study:** Compare the baseline without FAN, the specific frequency handling blocks, and the complete FAN architecture.
+- **Forecast Horizon Comparison:** Test 12, 24, 36, 48, 60, 72, 84, and 96 steps.
+- **Frequency Analysis:** Study Top-K values 1, 3, 5, 10, and 20.
+- **Ablation Study:** Compare the recorded Top-K configurations on ETTh1.
 
 ### Phase 7 — Visualization & Minimal Web UI
 **STATUS: COMPLETED / CURRENT IMPLEMENTATION**
@@ -190,13 +189,13 @@ The final model performance will be evaluated using standard forecasting metrics
 
 ---
 
-## 10. Team Division
+## 10. Team
 
-- **Member 1 — Data & Frequency Analysis:** Responsible for dataset management, preprocessing, splitting, scaling, initial time-series visualization, and FFT/frequency analysis.
-- **Member 2 — FAN Model:** Responsible for the core FAN implementation, frequency-based normalization, Top-K extraction, MLP/non-stationary prediction, and model integration.
-- **Member 3 — Baselines & Evaluation:** Responsible for setting up baseline models, conducting training/evaluation loops, calculating MSE/MAE, producing result tables/visualizations, and building the minimal UI.
+- Meet Dhorajiya (202451053)
+- Daksh Amalseda (202451012)
+- Keval Chorada (202451089)
 
-*(Responsibilities may overlap during the integration phases.)*
+The repository records the workstreams—data/frequency analysis, FAN integration, and baselines/evaluation/UI—but does not contain reliable per-person commit history or a name-to-workstream mapping. Individual contribution claims should therefore be added only after confirmation by the team.
 
 ---
 
@@ -210,3 +209,26 @@ The final model performance will be evaluated using standard forecasting metrics
 - Matplotlib
 - Google Colab / Kaggle
 - Git / GitHub
+
+---
+
+## 12. Reproduce and Verify
+
+```powershell
+# Full training: 4 datasets x 8 horizons x 2 models
+python scripts/train_all.py
+
+# Reload every checkpoint, evaluate complete test splits, and create figures
+python scripts/evaluate_all.py
+
+# Top-K ablation
+python scripts/run_ablation.py
+
+# Automated checks
+python -m unittest discover -s tests -v
+
+# Interactive demo
+python app.py
+```
+
+Results are written to `outputs/results/`, report figures to `outputs/figures/`, and checkpoints to `outputs/models/`.

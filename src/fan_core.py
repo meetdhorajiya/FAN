@@ -7,6 +7,13 @@ def main_freq_part(x, k, rfft=True):
     Reconstructs the non-stationary (dominant frequency) component and 
     separates the residual (stationary) component.
     """
+    if x.ndim != 3:
+        raise ValueError("Expected input shape (batch, sequence, features).")
+
+    frequency_bins = x.size(1) // 2 + 1 if rfft else x.size(1)
+    if not 1 <= k <= frequency_bins:
+        raise ValueError(f"k must be between 1 and {frequency_bins}, received {k}.")
+
     if rfft:
         xf = torch.fft.rfft(x, dim=1)
     else:
@@ -22,9 +29,10 @@ def main_freq_part(x, k, rfft=True):
     xf_filtered = xf * mask
 
     if rfft:
-        x_filtered = torch.fft.irfft(xf_filtered, dim=1).real.float()
+        # Supplying n preserves odd as well as even input sequence lengths.
+        x_filtered = torch.fft.irfft(xf_filtered, n=x.size(1), dim=1)
     else:
-        x_filtered = torch.fft.ifft(xf_filtered, dim=1).real.float()
+        x_filtered = torch.fft.ifft(xf_filtered, dim=1).real
 
     # Residual/stationary component
     norm_input = x - x_filtered
@@ -104,7 +112,15 @@ class FAN(nn.Module):
         Adaptive denormalization.
         Combines the predicted residual and predicted non-stationary components.
         """
+        if not hasattr(self, 'pred_main_freq_signal'):
+            raise RuntimeError("normalize must be called before denormalize.")
         bs, length, dim = input_norm.shape
+        if input_norm.shape != self.pred_main_freq_signal.shape:
+            raise ValueError(
+                "Residual and frequency predictions must have identical shapes; "
+                f"received {tuple(input_norm.shape)} and "
+                f"{tuple(self.pred_main_freq_signal.shape)}."
+            )
         
         self.pred_residual = input_norm
         # Combine predictions
@@ -117,3 +133,4 @@ class FAN(nn.Module):
             return self.normalize(batch_x)
         elif mode == 'd':
             return self.denormalize(batch_x)
+        raise ValueError("mode must be 'n' (normalize) or 'd' (denormalize)")

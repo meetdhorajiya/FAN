@@ -1,89 +1,102 @@
-# FAN Project: Final Analysis & Documentation
+# FAN Project: Final Analysis and Documentation
 
-## Overview
-This document summarizes the outcomes of the implementation, evaluation, and experiments conducted on the **Frequency Adaptive Normalization (FAN)** model as per the NeurIPS 2024 paper.
+## 1. Implemented System
 
-- **Paper:** Frequency Adaptive Normalization For Non-stationary Time Series Forecasting (NeurIPS 2024)
-- **Official Repo:** [wayne155/FAN](https://github.com/wayne155/FAN)
-- **Dataset Source:** [zhouhaoyi/ETDataset](https://github.com/zhouhaoyi/ETDataset)
+The repository implements an end-to-end multivariate forecasting pipeline:
 
----
+1. Chronological loading and a 70/20/10 train/validation/test split.
+2. Standard scaling fitted only on the training split.
+3. FFT-based extraction of the Top-K dominant components.
+4. Residual forecasting with a linear backbone.
+5. MLP forecasting of the extracted frequency component.
+6. Combination of both forecasts through FAN denormalization.
+7. Comparison against a DLinear baseline using MSE and MAE.
 
-## 1. Experimental Setup
+All four bundled ETT datasets, eight forecast horizons, saved checkpoints, complete-test evaluation, plots, and the Gradio interface are present in the repository.
 
-- **Datasets:** ETTh1, ETTh2, ETTm1, ETTm2 (all from the ETT-small collection)
-- **Data Splitting:** Chronological 7/2/1 split (70% Train, 20% Validation, 10% Test). Scaler fitted strictly on training data to prevent data leakage.
-- **Sequence Length:** 96 steps input
-- **Prediction Horizon:** 24 steps (primary); 12–96 tested in UI
-- **Training:** 3 epochs, Adam optimizer (lr=0.001), MSE loss, batch size 32
-- **Metrics:** Mean Squared Error (MSE), Mean Absolute Error (MAE)
-- **Environment:** PyTorch, CPU
+## 2. Experimental Setup
 
-> **Note:** The official paper trains for significantly more epochs with GPU. Our results are from a 3-epoch run for reproducibility within project constraints.
+- Datasets: ETTh1, ETTh2, ETTm1, and ETTm2.
+- Input sequence length: 96.
+- Forecast horizons: 12, 24, 36, 48, 60, 72, 84, and 96.
+- Split: chronological 70% training, 20% validation, and 10% testing.
+- Scaling: `StandardScaler` fitted on training rows only.
+- Training: 3 epochs, Adam, learning rate 0.001, batch size 32, seed 42, CPU.
+- FAN Top-K for the main comparison: 5.
+- Metrics: element-weighted MSE and MAE over every sample and all seven normalized output channels.
+- UI display: OT (channel index 6); its displayed metrics are OT-only for the selected example.
 
----
+The best validation state from the three epochs is restored before test evaluation. Machine-readable records are stored in `outputs/results/training_results.*` and independently reloaded results are stored in `outputs/results/evaluation_results.*`.
 
-## 2. Model Performance — All Datasets (pred_len = 24)
+## 3. Full Test Results at Horizon 24
 
-Trained models are saved in `outputs/models/` and loaded by the Gradio UI.
+| Dataset | Model | Test MSE | Test MAE | Lower MSE |
+|---|---|---:|---:|---|
+| ETTh1 | FAN | 0.2995 | 0.3739 | **FAN** |
+| ETTh1 | DLinear | 0.3058 | 0.3716 | |
+| ETTh2 | FAN | 0.0831 | 0.2061 | |
+| ETTh2 | DLinear | 0.0816 | 0.2026 | **DLinear** |
+| ETTm1 | FAN | 0.2736 | 0.3403 | |
+| ETTm1 | DLinear | 0.2507 | 0.3314 | **DLinear** |
+| ETTm2 | FAN | 0.0577 | 0.1687 | **FAN** |
+| ETTm2 | DLinear | 0.0600 | 0.1713 | |
 
-| Dataset | Model          | Test MSE | Test MAE | Winner   |
-|---------|----------------|----------|----------|----------|
-| ETTh1   | FAN-Integrated | 0.4316   | 0.4687   |          |
-| ETTh1   | DLinear        | 0.4087   | 0.4607   | DLinear  |
-| ETTh2   | FAN-Integrated | 0.1646   | 0.2987   |          |
-| ETTh2   | DLinear        | 0.1552   | 0.2901   | DLinear  |
-| ETTm1   | FAN-Integrated | 0.4515   | 0.4468   | **FAN**  |
-| ETTm1   | DLinear        | 0.7339   | 0.5718   |          |
-| ETTm2   | FAN-Integrated | 0.1513   | 0.2863   | **FAN**  |
-| ETTm2   | DLinear        | 0.2236   | 0.3424   |          |
+These are project results, not numbers copied from the FAN paper. FAN has the lower MSE on ETTh1 and ETTm2 at horizon 24; DLinear has the lower MSE on ETTh2 and ETTm1.
 
-**Observation:** FAN outperforms DLinear on the minute-resolution datasets (ETTm1, ETTm2), where richer high-frequency patterns exist and frequency-adaptive normalization provides a larger advantage. On hourly datasets (ETTh1, ETTh2), the gap is smaller at 3 epochs, and longer training would further close or reverse it.
+## 4. ETTh1 Forecast-Horizon Results
 
----
+| Horizon | FAN MSE | FAN MAE | DLinear MSE | DLinear MAE |
+|---:|---:|---:|---:|---:|
+| 12 | 0.2751 | 0.3578 | 0.2918 | 0.3656 |
+| 24 | 0.2995 | 0.3739 | 0.3058 | 0.3716 |
+| 36 | 0.3288 | 0.3924 | 0.3360 | 0.3936 |
+| 48 | 0.3428 | 0.4019 | 0.3502 | 0.4016 |
+| 60 | 0.3552 | 0.4105 | 0.3684 | 0.4149 |
+| 72 | 0.3768 | 0.4269 | 0.3854 | 0.4266 |
+| 84 | 0.3842 | 0.4325 | 0.3942 | 0.4326 |
+| 96 | 0.3875 | 0.4354 | 0.3987 | 0.4353 |
 
-## 3. Forecast Horizon Comparison (ETTh1, FAN-Integrated)
+In this run, error generally increases with forecast horizon. FAN has the lower ETTh1 MSE at every tested horizon, while MAE is close between the two models.
 
-| Forecast Horizon | Test MSE | Test MAE |
-|-----------------|----------|----------|
-| 24              | 0.4316   | 0.4687   |
-| 48              | ~0.49    | ~0.51    |
+## 5. Top-K Ablation on ETTh1, Horizon 24
 
-*Observation:* Errors grow with longer horizons due to cumulative uncertainty.
+| Top-K | Test MSE | Test MAE |
+|---:|---:|---:|
+| 1 | 0.3002 | 0.3736 |
+| 3 | 0.2972 | 0.3738 |
+| 5 | 0.2981 | 0.3739 |
+| 10 | 0.2958 | 0.3720 |
+| 20 | **0.2948** | **0.3718** |
 
----
+The tested range shows a small improvement as more dominant components are retained, with Top-K=20 producing the lowest MSE and MAE in this ablation. The differences are modest and apply only to this recorded ETTh1 run.
 
-## 4. Frequency Component Ablation Study (Top-K, ETTh1)
+## 6. Generated Evidence
 
-| Top-K Frequencies | Test MSE | Test MAE |
-|-------------------|----------|----------|
-| 5                 | 0.4316   | 0.4687   |
-| 10                | 0.4102   | 0.4530   |
+- `outputs/results/evaluation_results.csv`: full results for 64 dataset/model/horizon combinations.
+- `outputs/results/ablation_topk.csv`: five Top-K ablation runs.
+- `outputs/figures/model_comparison_mse.png` and `model_comparison_mae.png`: horizon comparisons.
+- `outputs/figures/forecast_*_24.png`: saved FAN/DLinear forecast examples for all four datasets.
+- `outputs/figures/ablation_topk.png`: ablation visualization.
+- `outputs/models/`: trained checkpoints used by evaluation and the UI.
 
-*Observation:* More Top-K frequencies improve accuracy, confirming that ETTh1 non-stationarity is governed by multiple dominant frequencies.
+## 7. Limitations
 
----
+- Training is intentionally limited to three CPU epochs; the results are a project-scale comparison rather than a claim of convergence or state-of-the-art performance.
+- The integrated FAN model uses the repository's `SimpleLinearBackbone`; other backbones are not evaluated here.
+- The main metrics average all seven normalized channels and are not inverse-transformed into physical units.
+- Each configuration is represented by one seeded run, so run-to-run variance is not measured.
+- Uploaded UI data must have the same seven numeric feature columns and should match the selected checkpoint's dataset distribution.
 
-## 5. Dataset Comparison Note
+## 8. Reproduction Commands
 
-The official FAN paper uses **all rows** of each ETT CSV file under a `7/2/1` split. Previous works (e.g., Informer) used only a subset with a `6/2/2` split. Our implementation follows the official approach — all rows from all 4 ETT-small CSVs are used.
+```powershell
+python scripts/train_all.py
+python scripts/evaluate_all.py
+python scripts/run_ablation.py
+python -m unittest discover -s tests -v
+python app.py
+```
 
----
+## 9. Conclusion
 
-## 6. Limitations & Future Work
-
-- **Training depth:** The official paper trains 100+ epochs on GPU. A 3-epoch CPU run gives indicative, not fully converged results.
-- **Hyperparameter search:** Top-K, MLP depth, and learning rate are not grid-searched per dataset.
-- **Backbone variety:** Only `SimpleLinearBackbone` is tested; future work can plug in Autoformer, PatchTST, TimesNet.
-- **More datasets:** The paper also evaluates Weather, Traffic, Electricity, ExchangeRate — outside current project scope.
-
----
-
-## 7. Conclusion
-
-The Phase 1–8 implementation confirms that Frequency Adaptive Normalization provides a robust framework to decompose non-stationary time series. Key findings:
-
-1. FAN achieves **state-of-the-art advantage** on minute-resolution datasets where frequency patterns are denser.
-2. The modular PyTorch implementation wraps any backbone seamlessly.
-3. The Gradio UI (`app.py`) loads **pre-trained weights** for all 4 datasets, enabling real interactive demonstrations.
-4. Training script (`scripts/train_all.py`) fully automates training and weight-saving for all dataset–model combinations.
+The project provides a complete, executable FAN-based forecasting prototype with leakage-safe scaling, an implemented baseline, full-loader training and evaluation, reproducible records, checkpoint reload verification, ablation analysis, report-ready figures, automated tests, and an interactive UI. The recorded results show that FAN is competitive with DLinear, but the winner depends on the dataset and metric.

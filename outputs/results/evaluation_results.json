@@ -1,0 +1,517 @@
+{
+  "generated_at_utc": "2026-09-23T18:17:51.506230+00:00",
+  "results": [
+    {
+      "dataset": "ETTh1",
+      "model": "FAN",
+      "pred_len": 12,
+      "mse": 0.27509903,
+      "mae": 0.35782277,
+      "samples": 1731
+    },
+    {
+      "dataset": "ETTh1",
+      "model": "DLinear",
+      "pred_len": 12,
+      "mse": 0.29182434,
+      "mae": 0.36556091,
+      "samples": 1731
+    },
+    {
+      "dataset": "ETTh1",
+      "model": "FAN",
+      "pred_len": 24,
+      "mse": 0.29953242,
+      "mae": 0.37394597,
+      "samples": 1719
+    },
+    {
+      "dataset": "ETTh1",
+      "model": "DLinear",
+      "pred_len": 24,
+      "mse": 0.30575645,
+      "mae": 0.37161651,
+      "samples": 1719
+    },
+    {
+      "dataset": "ETTh1",
+      "model": "FAN",
+      "pred_len": 36,
+      "mse": 0.32877673,
+      "mae": 0.39242463,
+      "samples": 1707
+    },
+    {
+      "dataset": "ETTh1",
+      "model": "DLinear",
+      "pred_len": 36,
+      "mse": 0.33600988,
+      "mae": 0.39357858,
+      "samples": 1707
+    },
+    {
+      "dataset": "ETTh1",
+      "model": "FAN",
+      "pred_len": 48,
+      "mse": 0.34278411,
+      "mae": 0.40187369,
+      "samples": 1695
+    },
+    {
+      "dataset": "ETTh1",
+      "model": "DLinear",
+      "pred_len": 48,
+      "mse": 0.35017374,
+      "mae": 0.40158199,
+      "samples": 1695
+    },
+    {
+      "dataset": "ETTh1",
+      "model": "FAN",
+      "pred_len": 60,
+      "mse": 0.35518255,
+      "mae": 0.41054414,
+      "samples": 1683
+    },
+    {
+      "dataset": "ETTh1",
+      "model": "DLinear",
+      "pred_len": 60,
+      "mse": 0.36844537,
+      "mae": 0.41485151,
+      "samples": 1683
+    },
+    {
+      "dataset": "ETTh1",
+      "model": "FAN",
+      "pred_len": 72,
+      "mse": 0.37683945,
+      "mae": 0.42690493,
+      "samples": 1671
+    },
+    {
+      "dataset": "ETTh1",
+      "model": "DLinear",
+      "pred_len": 72,
+      "mse": 0.38541892,
+      "mae": 0.42663093,
+      "samples": 1671
+    },
+    {
+      "dataset": "ETTh1",
+      "model": "FAN",
+      "pred_len": 84,
+      "mse": 0.38421936,
+      "mae": 0.43251042,
+      "samples": 1659
+    },
+    {
+      "dataset": "ETTh1",
+      "model": "DLinear",
+      "pred_len": 84,
+      "mse": 0.39421919,
+      "mae": 0.43262171,
+      "samples": 1659
+    },
+    {
+      "dataset": "ETTh1",
+      "model": "FAN",
+      "pred_len": 96,
+      "mse": 0.38752676,
+      "mae": 0.43540907,
+      "samples": 1647
+    },
+    {
+      "dataset": "ETTh1",
+      "model": "DLinear",
+      "pred_len": 96,
+      "mse": 0.3986728,
+      "mae": 0.43532487,
+      "samples": 1647
+    },
+    {
+      "dataset": "ETTh2",
+      "model": "FAN",
+      "pred_len": 12,
+      "mse": 0.07095427,
+      "mae": 0.18793571,
+      "samples": 1731
+    },
+    {
+      "dataset": "ETTh2",
+      "model": "DLinear",
+      "pred_len": 12,
+      "mse": 0.07343551,
+      "mae": 0.19237291,
+      "samples": 1731
+    },
+    {
+      "dataset": "ETTh2",
+      "model": "FAN",
+      "pred_len": 24,
+      "mse": 0.08309678,
+      "mae": 0.20613156,
+      "samples": 1719
+    },
+    {
+      "dataset": "ETTh2",
+      "model": "DLinear",
+      "pred_len": 24,
+      "mse": 0.08155976,
+      "mae": 0.20262569,
+      "samples": 1719
+    },
+    {
+      "dataset": "ETTh2",
+      "model": "FAN",
+      "pred_len": 36,
+      "mse": 0.09048668,
+      "mae": 0.21426293,
+      "samples": 1707
+    },
+    {
+      "dataset": "ETTh2",
+      "model": "DLinear",
+      "pred_len": 36,
+      "mse": 0.09215779,
+      "mae": 0.21710999,
+      "samples": 1707
+    },
+    {
+      "dataset": "ETTh2",
+      "model": "FAN",
+      "pred_len": 48,
+      "mse": 0.10438633,
+      "mae": 0.2329458,
+      "samples": 1695
+    },
+    {
+      "dataset": "ETTh2",
+      "model": "DLinear",
+      "pred_len": 48,
+      "mse": 0.09755831,
+      "mae": 0.22227287,
+      "samples": 1695
+    },
+    {
+      "dataset": "ETTh2",
+      "model": "FAN",
+      "pred_len": 60,
+      "mse": 0.10691393,
+      "mae": 0.23393571,
+      "samples": 1683
+    },
+    {
+      "dataset": "ETTh2",
+      "model": "DLinear",
+      "pred_len": 60,
+      "mse": 0.10416934,
+      "mae": 0.23015635,
+      "samples": 1683
+    },
+    {
+      "dataset": "ETTh2",
+      "model": "FAN",
+      "pred_len": 72,
+      "mse": 0.11158426,
+      "mae": 0.23748566,
+      "samples": 1671
+    },
+    {
+      "dataset": "ETTh2",
+      "model": "DLinear",
+      "pred_len": 72,
+      "mse": 0.11095027,
+      "mae": 0.23617656,
+      "samples": 1671
+    },
+    {
+      "dataset": "ETTh2",
+      "model": "FAN",
+      "pred_len": 84,
+      "mse": 0.11904143,
+      "mae": 0.25054926,
+      "samples": 1659
+    },
+    {
+      "dataset": "ETTh2",
+      "model": "DLinear",
+      "pred_len": 84,
+      "mse": 0.11377651,
+      "mae": 0.23987279,
+      "samples": 1659
+    },
+    {
+      "dataset": "ETTh2",
+      "model": "FAN",
+      "pred_len": 96,
+      "mse": 0.12430063,
+      "mae": 0.25152239,
+      "samples": 1647
+    },
+    {
+      "dataset": "ETTh2",
+      "model": "DLinear",
+      "pred_len": 96,
+      "mse": 0.11911704,
+      "mae": 0.24601051,
+      "samples": 1647
+    },
+    {
+      "dataset": "ETTm1",
+      "model": "FAN",
+      "pred_len": 12,
+      "mse": 0.18430467,
+      "mae": 0.27442149,
+      "samples": 6957
+    },
+    {
+      "dataset": "ETTm1",
+      "model": "DLinear",
+      "pred_len": 12,
+      "mse": 0.18780913,
+      "mae": 0.28324976,
+      "samples": 6957
+    },
+    {
+      "dataset": "ETTm1",
+      "model": "FAN",
+      "pred_len": 24,
+      "mse": 0.27363696,
+      "mae": 0.34025591,
+      "samples": 6945
+    },
+    {
+      "dataset": "ETTm1",
+      "model": "DLinear",
+      "pred_len": 24,
+      "mse": 0.25066196,
+      "mae": 0.33144041,
+      "samples": 6945
+    },
+    {
+      "dataset": "ETTm1",
+      "model": "FAN",
+      "pred_len": 36,
+      "mse": 0.31023359,
+      "mae": 0.36952855,
+      "samples": 6933
+    },
+    {
+      "dataset": "ETTm1",
+      "model": "DLinear",
+      "pred_len": 36,
+      "mse": 0.28918024,
+      "mae": 0.35863112,
+      "samples": 6933
+    },
+    {
+      "dataset": "ETTm1",
+      "model": "FAN",
+      "pred_len": 48,
+      "mse": 0.32224257,
+      "mae": 0.3782882,
+      "samples": 6921
+    },
+    {
+      "dataset": "ETTm1",
+      "model": "DLinear",
+      "pred_len": 48,
+      "mse": 0.3049654,
+      "mae": 0.37122455,
+      "samples": 6921
+    },
+    {
+      "dataset": "ETTm1",
+      "model": "FAN",
+      "pred_len": 60,
+      "mse": 0.32386651,
+      "mae": 0.3810721,
+      "samples": 6909
+    },
+    {
+      "dataset": "ETTm1",
+      "model": "DLinear",
+      "pred_len": 60,
+      "mse": 0.31110265,
+      "mae": 0.37326772,
+      "samples": 6909
+    },
+    {
+      "dataset": "ETTm1",
+      "model": "FAN",
+      "pred_len": 72,
+      "mse": 0.36314494,
+      "mae": 0.4090799,
+      "samples": 6897
+    },
+    {
+      "dataset": "ETTm1",
+      "model": "DLinear",
+      "pred_len": 72,
+      "mse": 0.32258836,
+      "mae": 0.38194707,
+      "samples": 6897
+    },
+    {
+      "dataset": "ETTm1",
+      "model": "FAN",
+      "pred_len": 84,
+      "mse": 0.3679197,
+      "mae": 0.4035271,
+      "samples": 6885
+    },
+    {
+      "dataset": "ETTm1",
+      "model": "DLinear",
+      "pred_len": 84,
+      "mse": 0.3200003,
+      "mae": 0.37624395,
+      "samples": 6885
+    },
+    {
+      "dataset": "ETTm1",
+      "model": "FAN",
+      "pred_len": 96,
+      "mse": 0.35789854,
+      "mae": 0.39897362,
+      "samples": 6873
+    },
+    {
+      "dataset": "ETTm1",
+      "model": "DLinear",
+      "pred_len": 96,
+      "mse": 0.32490087,
+      "mae": 0.3811211,
+      "samples": 6873
+    },
+    {
+      "dataset": "ETTm2",
+      "model": "FAN",
+      "pred_len": 12,
+      "mse": 0.04322788,
+      "mae": 0.1458528,
+      "samples": 6957
+    },
+    {
+      "dataset": "ETTm2",
+      "model": "DLinear",
+      "pred_len": 12,
+      "mse": 0.04456958,
+      "mae": 0.14624306,
+      "samples": 6957
+    },
+    {
+      "dataset": "ETTm2",
+      "model": "FAN",
+      "pred_len": 24,
+      "mse": 0.05766067,
+      "mae": 0.16866523,
+      "samples": 6945
+    },
+    {
+      "dataset": "ETTm2",
+      "model": "DLinear",
+      "pred_len": 24,
+      "mse": 0.05995574,
+      "mae": 0.1713014,
+      "samples": 6945
+    },
+    {
+      "dataset": "ETTm2",
+      "model": "FAN",
+      "pred_len": 36,
+      "mse": 0.06780327,
+      "mae": 0.18356845,
+      "samples": 6933
+    },
+    {
+      "dataset": "ETTm2",
+      "model": "DLinear",
+      "pred_len": 36,
+      "mse": 0.07002116,
+      "mae": 0.18604529,
+      "samples": 6933
+    },
+    {
+      "dataset": "ETTm2",
+      "model": "FAN",
+      "pred_len": 48,
+      "mse": 0.0757074,
+      "mae": 0.19368858,
+      "samples": 6921
+    },
+    {
+      "dataset": "ETTm2",
+      "model": "DLinear",
+      "pred_len": 48,
+      "mse": 0.07560431,
+      "mae": 0.19340092,
+      "samples": 6921
+    },
+    {
+      "dataset": "ETTm2",
+      "model": "FAN",
+      "pred_len": 60,
+      "mse": 0.07783132,
+      "mae": 0.19658332,
+      "samples": 6909
+    },
+    {
+      "dataset": "ETTm2",
+      "model": "DLinear",
+      "pred_len": 60,
+      "mse": 0.08098376,
+      "mae": 0.20217913,
+      "samples": 6909
+    },
+    {
+      "dataset": "ETTm2",
+      "model": "FAN",
+      "pred_len": 72,
+      "mse": 0.08094622,
+      "mae": 0.20149755,
+      "samples": 6897
+    },
+    {
+      "dataset": "ETTm2",
+      "model": "DLinear",
+      "pred_len": 72,
+      "mse": 0.08466124,
+      "mae": 0.20722132,
+      "samples": 6897
+    },
+    {
+      "dataset": "ETTm2",
+      "model": "FAN",
+      "pred_len": 84,
+      "mse": 0.08329744,
+      "mae": 0.20330802,
+      "samples": 6885
+    },
+    {
+      "dataset": "ETTm2",
+      "model": "DLinear",
+      "pred_len": 84,
+      "mse": 0.0842472,
+      "mae": 0.2054496,
+      "samples": 6885
+    },
+    {
+      "dataset": "ETTm2",
+      "model": "FAN",
+      "pred_len": 96,
+      "mse": 0.08448195,
+      "mae": 0.2070742,
+      "samples": 6873
+    },
+    {
+      "dataset": "ETTm2",
+      "model": "DLinear",
+      "pred_len": 96,
+      "mse": 0.08533576,
+      "mae": 0.20813737,
+      "samples": 6873
+    }
+  ]
+}
